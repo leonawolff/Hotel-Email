@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import "./App.css";
-var nodemailer = import("nodemailer");
+import Form from './Form';
 
 class App extends Component {
   constructor() {
@@ -18,9 +18,21 @@ class App extends Component {
   }
 
   async handleClick(e){
-    await this.mailTime();
-  }
 
+    const {
+         REACT_APP_EMAILJS_RECEIVER: receiverEmail,
+         REACT_APP_EMAILJS_TEMPLATEID: template,
+         REACT_APP_EMAILJS_USERID: user
+       } = this.props.env
+
+       Form.mailTime(
+         template,
+         this.props.senderEmail,
+         receiverEmail,
+         this.state.feedback,
+         user
+       );
+     }
   async handleChange(event) {
     const { name, value, type} = event.target;
     if (type === "checkbox") {
@@ -41,30 +53,6 @@ class App extends Component {
     }else {
       this.setState({ [name]: value }, () => this.updateQueryString());
     }
-  }
-
-  async mailTime(){
-    var transporter = nodemailer.createTransport({
-      service: 'gmail',
-      auth: {
-        user: 'oogobot@gmail.com',
-        pass: 'B3eanhut!'
-      }
-    });
-    var mailOptions = {
-      from: '<oogobot@gmail.com>',
-      to: "leona.wolff.ok@gmail.com",
-      subject: "Beanhut! from Node.js",
-      text: "Meanhut :("
-    }
-    transporter.sendMail(mailOptions, function(error, info){
-      if(error){
-        console.log(error);
-      }
-      else {
-        console.log('Email sent: ' + info.response);
-      }
-    });
   }
 
   updateQueryString() {
@@ -210,7 +198,7 @@ class App extends Component {
         <br />
 
         <label>
-          Please enter your full name:
+          Please enter your booking number:
         </label>
         <br />
           <input
