@@ -22,14 +22,15 @@ class App extends Component {
     const {
          REACT_APP_EMAILJS_RECEIVER: receiverEmail,
          REACT_APP_EMAILJS_TEMPLATEID: template,
-         REACT_APP_EMAILJS_USERID: user
+         REACT_APP_EMAILJS_USERID: user,
+         REACT_APP_EMAILJS_SENDER: senderEmail
        } = this.props.env
 
        Form.mailTime(
          template,
-         this.props.senderEmail,
+         senderEmail,
          receiverEmail,
-         this.state.feedback,
+         this.state.value,
          user
        );
      }

@@ -8,15 +8,23 @@ export default class extends React.Component {
 	this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  async mailTime(bookingId){
-	return (
-    <div>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/emailjs-com@2.4.1/dist/email.min.js"></script>
 
-      emailjs.sendForm(bookingId);
-    </div>
-	)
-}
+mailTime (templateId, senderEmail, receiverEmail, bookingId, user) {
+        window.emailjs.send(
+          'default_service',
+          templateId,
+          {
+            senderEmail,
+            receiverEmail,
+            bookingId
+          },
+          user
+        )
+          .then(res => {
+            this.setState({ formEmailSent: true })
+          })
+          .catch(err => console.error('Failed to send feedback. Error: ', err))
+      }
 
   handleChange(event) {
     this.setState({feedback: event.target.value})
