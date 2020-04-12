@@ -1,17 +1,20 @@
 import React, { Component } from "react";
+import DatePicker from "react-datepicker";
 import "./App.css";
+import "react-datepicker/dist/react-datepicker.css";
 import Form from './Form';
 
 class App extends Component {
   constructor() {
     super();
     this.state = {
-      location: window.location.href.substr(23),
+      startDate: new Date(),
+      startTime: new Date(),
       filters: [],
       pub_filters: "",
       pub_category: "",
-      queryString: "",
-      url: window.location.href
+      bookingId: "",
+      bookingInfo: ""
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleClick = this.handleClick.bind(this);
@@ -19,20 +22,8 @@ class App extends Component {
 
   async handleClick(e){
 
-    const {
-         REACT_APP_EMAILJS_RECEIVER: receiverEmail,
-         REACT_APP_EMAILJS_TEMPLATEID: template,
-         REACT_APP_EMAILJS_USERID: user,
-         REACT_APP_EMAILJS_SENDER: senderEmail
-       } = this.props.env
+       Form.mailTime(this.bookingInfo, this.state.value);
 
-       Form.mailTime(
-         template,
-         senderEmail,
-         receiverEmail,
-         this.state.value,
-         user
-       );
      }
   async handleChange(event) {
     const { name, value, type} = event.target;
@@ -46,25 +37,41 @@ class App extends Component {
         {
           pub_filters: this.state.filters.join("%2C")
         },
-        () => this.updateQueryString()
+        () => this.updateBookingInfo()
       );
     }
     if (type === "text") {
-      console.log(event.target.value);
-    }else {
-      this.setState({ [name]: value }, () => this.updateQueryString());
+      this.setState(
+        {
+          bookingId : event.target.value
+        },
+        () => this.updateBookingInfo());
+      console.log(this.bookingId);
     }
+    if (type === "date") {
+    this.setState({
+      startDate: this.date
+    });
+  }
+  if (type === "time") {
+  this.setState({
+    startTime: this.date
+  });
+}
+  else {
+    this.setState({ [name]: value }, () => this.updateBookingInfo());
+  };
   }
 
-  updateQueryString() {
-    let queryString = "";
+  updateBookingInfo() {
     if (this.state.pub_category.length !== 0)
-      queryString += `pub_category=${this.state.pub_category}&`;
+      this.bookingInfo += `${this.state.pub_category}\n`;
     if (this.state.pub_filters.length !== 0)
-      queryString += `pub_filters=${this.state.pub_filters}`;
+      this.bookingInfo += `${this.state.pub_filters}\n`;
     this.setState({
-      queryString: queryString
+      bookingInfo: this.bookingInfo
     });
+    console.log(this.bookingInfo);
   }
 
   render() {
@@ -211,9 +218,35 @@ class App extends Component {
         <br />
         <br />
 
+        <label>
+        Please select desired date for minder:
+        </label>
+        <br />
+        <DatePicker
+                type="date"
+                selected={this.state.startDate}
+                onChange={this.handleChange}
+              />
+
+        <br />
+        <br />
+        <label>
+        Please select desired time for minder:
+        </label>
+        <br />
+        <DatePicker
+        type="time"
+          selected={this.state.date}
+          onChange={this.handleChange}
+          showTimeSelect
+          dateFormat="Pp"
+        />
+
+        <br />
+        <br />s
+
         <button
           className = "submit"
-          href={`https://oogo.herokuapp.com/s?${this.state.queryString}`}
           target="_blank"
           rel="noopener noreferrer"
           onClick = {this.handleClick}

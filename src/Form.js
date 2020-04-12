@@ -9,7 +9,15 @@ export default class extends React.Component {
   }
 
 
-mailTime (templateId, senderEmail, receiverEmail, bookingId, user) {
+mailTime (bookingId) {
+
+  const {
+    REACT_APP_EMAILJS_RECEIVER: receiverEmail,
+    REACT_APP_EMAILJS_SENDER: senderEmail,
+    REACT_APP_EMAILJS_TEMPLATEID: templateId,
+    REACT_APP_EMAILJS_USERID: user,
+  } = this.props.env;
+
         window.emailjs.send(
           'default_service',
           templateId,
