@@ -25,12 +25,12 @@ class App extends Component {
 
   async handleClick(e){
 
-       Form.mailTime(this.bookingInfo, this.date, this.time, this.bookingId);
+    Form.mailTime(this.state.bookingInfo, this.state.date, this.state.time, this.state.bookingId);
 
-     }
+  }
   async handleChange(event) {
     const { name, value, type} = event.target;
-    console.log(type);
+    console.log(name);
     if (type === "checkbox") {
       if (this.state.filters.includes(value)) {
         this.state.filters = this.state.filters.filter(f => f !== value);
@@ -54,30 +54,38 @@ class App extends Component {
       );
     }
     if (type === "text") {
-      this.setState(
-        {
-          bookingId : event.target.value
-        }
-     );
-    console.log(this.state.bookingId)
-  }
-    if (type === "date") {
-    this.setState({
-      startDate: this.date
-    });
-  }
-  if (type === "time") {
-  this.setState({
-    startTime: this.date
-  });
-};
+      if (name === "bookingId"){
+        this.setState(
+          {
+            bookingId : event.target.value
+          }
+        );
+      }
+      if (name === "date"){
+        this.setState(
+          {
+            date : event.target.value
+          }
+        );
+      }
+      if (name === "time"){
+        this.setState(
+          {
+            time : event.target.value
+          }
+        );
+      }
+      console.log("Booking ID : " + this.state.bookingId);
+      console.log("Date : " + this.state.date);
+      console.log("Time : " + this.state.time);
+    };
   }
 
   updateBookingInfo() {
     if (this.state.pub_category.length !== 0)
-      this.bookingInfo += `${this.state.pub_category}`;
-      this.bookingInfo = this.state.filters.toString();
-      this.bookingInfo = this.bookingInfo.replace(/,/g, '\n');
+    this.bookingInfo += `${this.state.pub_category}`;
+    this.bookingInfo = this.state.filters.toString();
+    this.bookingInfo = this.bookingInfo.replace(/,/g, '\n');
     console.log("Booking Info: " + this.bookingInfo);
     this.setState({
       bookingInfo: this.bookingInfo
@@ -90,180 +98,180 @@ class App extends Component {
       <div>
       <form>
 
-        <h1>
-        <img className = "logo"  alt = "logo" src={"logo192.png"}  width = "50" height = "50"/>
-        <text className = "title">Book a Minder</text>
-        </h1>
-        <h2 className = "press">
-        </h2>
-        <h2>Filters</h2>
-        <label>
-          <input
-            type="checkbox"
-            name="pub_filters"
-            value="new_borns"
-            onChange={this.handleChange}
-          />{" "}
-          New borns
-        </label>
+      <h1>
+      <img className = "logo"  alt = "logo" src={"logo192.png"}  width = "50" height = "50"/>
+      <text className = "title">Book a Minder</text>
+      </h1>
+      <h2 className = "press">
+      </h2>
+      <h2>Filters</h2>
+      <label>
+      <input
+      type="checkbox"
+      name="pub_filters"
+      value="new_borns"
+      onChange={this.handleChange}
+      />{" "}
+      New borns
+      </label>
 
-        <br />
-        <label>
-          <input
-            type="checkbox"
-            name="pub_filters"
-            value="non_smoker"
-            onChange={this.handleChange}
-          />{" "}
-          Non smoker
-        </label>
+      <br />
+      <label>
+      <input
+      type="checkbox"
+      name="pub_filters"
+      value="non_smoker"
+      onChange={this.handleChange}
+      />{" "}
+      Non smoker
+      </label>
 
-        <br />
-        <label>
-          <input
-            type="checkbox"
-            name="pub_filters"
-            value="first_aid"
-            onChange={this.handleChange}
-          />{" "}
-          First aid
-        </label>
+      <br />
+      <label>
+      <input
+      type="checkbox"
+      name="pub_filters"
+      value="first_aid"
+      onChange={this.handleChange}
+      />{" "}
+      First aid
+      </label>
 
-        <br />
-        <label>
-          <input
-            type="checkbox"
-            name="pub_filters"
-            value="own_transport"
-            onChange={this.handleChange}
-          />{" "}
-          Own Transport
-        </label>
+      <br />
+      <label>
+      <input
+      type="checkbox"
+      name="pub_filters"
+      value="own_transport"
+      onChange={this.handleChange}
+      />{" "}
+      Own Transport
+      </label>
 
-        <br />
-        <label>
-          <input
-            type="checkbox"
-            name="pub_filters"
-            value="qualifications"
-            onChange={this.handleChange}
-          />{" "}
-          Qualifications
-        </label>
+      <br />
+      <label>
+      <input
+      type="checkbox"
+      name="pub_filters"
+      value="qualifications"
+      onChange={this.handleChange}
+      />{" "}
+      Qualifications
+      </label>
 
-        <br />
-        <label>
-          <input
-            type="checkbox"
-            name="pub_filters"
-            value="overnights"
-            onChange={this.handleChange}
-          />{" "}
-          Overnights
-        </label>
+      <br />
+      <label>
+      <input
+      type="checkbox"
+      name="pub_filters"
+      value="overnights"
+      onChange={this.handleChange}
+      />{" "}
+      Overnights
+      </label>
 
-        <br />
-        <label>
-          <input
-            type="checkbox"
-            name="pub_filters"
-            value="evenings"
-            onChange={this.handleChange}
-          />{" "}
-          Evenings
-        </label>
+      <br />
+      <label>
+      <input
+      type="checkbox"
+      name="pub_filters"
+      value="evenings"
+      onChange={this.handleChange}
+      />{" "}
+      Evenings
+      </label>
 
-        <br />
-        <label>
-          <input
-            type="checkbox"
-            name="pub_filters"
-            value="mornings"
-            onChange={this.handleChange}
-          />{" "}
-          Mornings
-        </label>
+      <br />
+      <label>
+      <input
+      type="checkbox"
+      name="pub_filters"
+      value="mornings"
+      onChange={this.handleChange}
+      />{" "}
+      Mornings
+      </label>
 
-        <br />
-        <label>
-          <input
-            type="checkbox"
-            name="pub_filters"
-            value="all_day"
-            onChange={this.handleChange}
-          />{" "}
-          All day
-        </label>
+      <br />
+      <label>
+      <input
+      type="checkbox"
+      name="pub_filters"
+      value="all_day"
+      onChange={this.handleChange}
+      />{" "}
+      All day
+      </label>
 
-        <br />
-        <br />
-        <label>Category: </label>
-        <br />
-        <select
-          value={this.state.pub_category}
-          defaultValue={{ label: "Select Dept", value: 0 }}
-          onChange={this.handleChange}
-          name="pub_category"
-        >
-          <option value="">none</option>
-          <option value="babysitter"> babysitter</option>
-          <option value="babysitter_overnight">babysitter_overnight</option>
-          <option value="nanny">nanny</option>
-          <option value="childminder">childminder</option>
-          <option value="day_care">day_care</option>
-          <option value="maternity_nurse">maternity_nurse</option>
-        </select>
+      <br />
+      <br />
+      <label>Category: </label>
+      <br />
+      <select
+      value={this.state.pub_category}
+      defaultValue={{ label: "Select Dept", value: 0 }}
+      onChange={this.handleChange}
+      name="pub_category"
+      >
+      <option value="">none</option>
+      <option value="babysitter"> babysitter</option>
+      <option value="babysitter_overnight">babysitter_overnight</option>
+      <option value="nanny">nanny</option>
+      <option value="childminder">childminder</option>
+      <option value="day_care">day_care</option>
+      <option value="maternity_nurse">maternity_nurse</option>
+      </select>
 
-        <br />
-        <br />
+      <br />
+      <br />
 
-        <label>
-          Please enter your booking number:
-        </label>
-        <br />
-          <input
-            type="text"
-            value={this.state.value}
-            onChange={this.handleChange}
-        />
+      <label>
+      Please enter your booking number:
+      </label>
+      <br />
+      <input
+      type="text"
+      name="bookingId"
+      value={this.state.value}
+      onChange={this.handleChange}
+      />
 
-        <br />
-        <br />
+      <br />
+      <br />
 
-        <label>
-        Please select desired date for minder:
-        </label>
-        <br />
-        <DatePicker
-                selected={this.state.startDate}
-                onChange={this.handleChange}
-              />
+      <label>
+      Please select desired date for minder:
+      </label>
+      <br />
+      <input
+      type="text"
+      name="date"
+      value={this.state.value}
+      onChange={this.handleChange}
+      />
 
-        <br />
-        <br />
+      <br />
+      <br />
 
-        <label>
-        Please select desired time for minder:
-        </label>
-        <br />
-        <DatePicker
-          selected={this.state.date}
-          onChange={this.handleChange}
-          showTimeSelect
-          dateFormat="Pp"
-        />
+      <label>
+      Please select desired time for minder ********
+      </label>
+      <br />
+      <input
+      type="text"
+      name="time"
+      value={this.state.value}
+      onChange={this.handleChange}
+      />
 
-        <br />
-        <br />
-
-        <button
-          className = "submit"
-          target="_blank"
-          rel="noopener noreferrer"
-          onClick = {this.handleClick}
-        >
-          Submit
-        </button>
+      <button
+      className = "submit"
+      target="_blank"
+      rel="noopener noreferrer"
+      onClick = {this.handleClick}
+      >
+      Submit
+      </button>
       </form>
       </div>
 
