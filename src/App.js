@@ -1,7 +1,10 @@
 import React, { Component } from "react";
 import DatePicker from "react-datepicker";
+import PropTypes from 'prop-types';
 import "./App.css";
 import "react-datepicker/dist/react-datepicker.css";
+import moment from 'moment';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import Form from './Form';
 
 class App extends Component {
@@ -22,20 +25,30 @@ class App extends Component {
 
   async handleClick(e){
 
-       Form.mailTime(this.bookingInfo, this.state.value);
+       Form.mailTime(this.bookingInfo, this.date, this.time, this.bookingId);
 
      }
   async handleChange(event) {
     const { name, value, type} = event.target;
+    console.log(type);
     if (type === "checkbox") {
       if (this.state.filters.includes(value)) {
         this.state.filters = this.state.filters.filter(f => f !== value);
       } else {
         this.state.filters.push(value);
       }
+
       this.setState(
         {
-          pub_filters: this.state.filters.join("%2C")
+          pub_filters: this.state.filters.join(", ")
+        },
+        () => this.updateBookingInfo()
+      );
+    }
+    if (type === "select-one") {
+      this.setState(
+        {
+          pub_category: event.target.value
         },
         () => this.updateBookingInfo()
       );
@@ -44,10 +57,10 @@ class App extends Component {
       this.setState(
         {
           bookingId : event.target.value
-        },
-        () => this.updateBookingInfo());
-      console.log(this.bookingId);
-    }
+        }
+     );
+    console.log(this.state.bookingId)
+  }
     if (type === "date") {
     this.setState({
       startDate: this.date
@@ -57,21 +70,19 @@ class App extends Component {
   this.setState({
     startTime: this.date
   });
-}
-  else {
-    this.setState({ [name]: value }, () => this.updateBookingInfo());
-  };
+};
   }
 
   updateBookingInfo() {
     if (this.state.pub_category.length !== 0)
-      this.bookingInfo += `${this.state.pub_category}\n`;
-    if (this.state.pub_filters.length !== 0)
-      this.bookingInfo += `${this.state.pub_filters}\n`;
+      this.bookingInfo += `${this.state.pub_category}`;
+      this.bookingInfo = this.state.filters.toString();
+      this.bookingInfo = this.bookingInfo.replace(/,/g, '\n');
+    console.log("Booking Info: " + this.bookingInfo);
     this.setState({
       bookingInfo: this.bookingInfo
     });
-    console.log(this.bookingInfo);
+    console.log("CATEGORY: " + this.state.pub_category);
   }
 
   render() {
@@ -187,6 +198,7 @@ class App extends Component {
         <br />
         <br />
         <label>Category: </label>
+        <br />
         <select
           value={this.state.pub_category}
           defaultValue={{ label: "Select Dept", value: 0 }}
@@ -223,19 +235,18 @@ class App extends Component {
         </label>
         <br />
         <DatePicker
-                type="date"
                 selected={this.state.startDate}
                 onChange={this.handleChange}
               />
 
         <br />
         <br />
+
         <label>
         Please select desired time for minder:
         </label>
         <br />
         <DatePicker
-        type="time"
           selected={this.state.date}
           onChange={this.handleChange}
           showTimeSelect
@@ -243,7 +254,7 @@ class App extends Component {
         />
 
         <br />
-        <br />s
+        <br />
 
         <button
           className = "submit"

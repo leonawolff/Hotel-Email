@@ -9,7 +9,7 @@ export default class extends React.Component {
   }
 
 
-mailTime (bookingId) {
+mailTime (bookingId, bookingInfo, date, time) {
 
   const {
     REACT_APP_EMAILJS_RECEIVER: receiverEmail,
