@@ -25,7 +25,7 @@ class App extends Component {
 
   async handleClick(e){
 
-    Form.mailTime(this.state.bookingInfo, this.state.date, this.state.time, this.state.bookingId);
+    Form.sendEmail(this.state.bookingId, this.state.bookingInfo, this.state.date, this.state.time, this.state.category);
 
   }
   async handleChange(event) {
@@ -96,183 +96,183 @@ class App extends Component {
   render() {
     return (
       <div>
-      <form>
+        <form>
 
-      <h1>
-      <img className = "logo"  alt = "logo" src={"logo192.png"}  width = "50" height = "50"/>
-      <text className = "title">Book a Minder</text>
-      </h1>
-      <h2 className = "press">
-      </h2>
-      <h2>Filters</h2>
-      <label>
-      <input
-      type="checkbox"
-      name="pub_filters"
-      value="new_borns"
-      onChange={this.handleChange}
-      />{" "}
-      New borns
-      </label>
+          <h1>
+            <img className = "logo"  alt = "logo" src={"logo192.png"}  width = "50" height = "50"/>
+            <text className = "title">Book a Minder</text>
+          </h1>
+          <h2 className = "press">
+          </h2>
+          <h2>Filters</h2>
+          <label>
+            <input
+            type="checkbox"
+            name="pub_filters"
+            value="new_borns"
+            onChange={this.handleChange}
+            />{" "}
+            New borns
+          </label>
 
-      <br />
-      <label>
-      <input
-      type="checkbox"
-      name="pub_filters"
-      value="non_smoker"
-      onChange={this.handleChange}
-      />{" "}
-      Non smoker
-      </label>
+          <br />
+          <label>
+            <input
+            type="checkbox"
+            name="pub_filters"
+            value="non_smoker"
+            onChange={this.handleChange}
+            />{" "}
+            Non smoker
+          </label>
 
-      <br />
-      <label>
-      <input
-      type="checkbox"
-      name="pub_filters"
-      value="first_aid"
-      onChange={this.handleChange}
-      />{" "}
-      First aid
-      </label>
+          <br />
+          <label>
+            <input
+            type="checkbox"
+            name="pub_filters"
+            value="first_aid"
+            onChange={this.handleChange}
+            />{" "}
+            First aid
+          </label>
 
-      <br />
-      <label>
-      <input
-      type="checkbox"
-      name="pub_filters"
-      value="own_transport"
-      onChange={this.handleChange}
-      />{" "}
-      Own Transport
-      </label>
+          <br />
+          <label>
+            <input
+            type="checkbox"
+            name="pub_filters"
+            value="own_transport"
+            onChange={this.handleChange}
+            />{" "}
+            Own Transport
+          </label>
 
-      <br />
-      <label>
-      <input
-      type="checkbox"
-      name="pub_filters"
-      value="qualifications"
-      onChange={this.handleChange}
-      />{" "}
-      Qualifications
-      </label>
+          <br />
+          <label>
+            <input
+            type="checkbox"
+            name="pub_filters"
+            value="qualifications"
+            onChange={this.handleChange}
+            />{" "}
+            Qualifications
+          </label>
 
-      <br />
-      <label>
-      <input
-      type="checkbox"
-      name="pub_filters"
-      value="overnights"
-      onChange={this.handleChange}
-      />{" "}
-      Overnights
-      </label>
+          <br />
+          <label>
+            <input
+            type="checkbox"
+            name="pub_filters"
+            value="overnights"
+            onChange={this.handleChange}
+            />{" "}
+            Overnights
+          </label>
 
-      <br />
-      <label>
-      <input
-      type="checkbox"
-      name="pub_filters"
-      value="evenings"
-      onChange={this.handleChange}
-      />{" "}
-      Evenings
-      </label>
+          <br />
+          <label>
+            <input
+            type="checkbox"
+            name="pub_filters"
+            value="evenings"
+            onChange={this.handleChange}
+            />{" "}
+            Evenings
+          </label>
 
-      <br />
-      <label>
-      <input
-      type="checkbox"
-      name="pub_filters"
-      value="mornings"
-      onChange={this.handleChange}
-      />{" "}
-      Mornings
-      </label>
+          <br />
+          <label>
+            <input
+            type="checkbox"
+            name="pub_filters"
+            value="mornings"
+            onChange={this.handleChange}
+            />{" "}
+            Mornings
+          </label>
 
-      <br />
-      <label>
-      <input
-      type="checkbox"
-      name="pub_filters"
-      value="all_day"
-      onChange={this.handleChange}
-      />{" "}
-      All day
-      </label>
+          <br />
+          <label>
+            <input
+            type="checkbox"
+            name="pub_filters"
+            value="all_day"
+            onChange={this.handleChange}
+            />{" "}
+            All day
+          </label>
 
-      <br />
-      <br />
-      <label>Category: </label>
-      <br />
-      <select
-      value={this.state.pub_category}
-      defaultValue={{ label: "Select Dept", value: 0 }}
-      onChange={this.handleChange}
-      name="pub_category"
-      >
-      <option value="">none</option>
-      <option value="babysitter"> babysitter</option>
-      <option value="babysitter_overnight">babysitter_overnight</option>
-      <option value="nanny">nanny</option>
-      <option value="childminder">childminder</option>
-      <option value="day_care">day_care</option>
-      <option value="maternity_nurse">maternity_nurse</option>
-      </select>
+          <br />
+          <br />
+          <label>Category: </label>
+          <br />
+          <select
+          value={this.state.pub_category}
+          defaultValue={{ label: "Select Dept", value: 0 }}
+          onChange={this.handleChange}
+          name="pub_category"
+          >
+            <option value="">none</option>
+            <option value="babysitter"> babysitter</option>
+            <option value="babysitter_overnight">babysitter_overnight</option>
+            <option value="nanny">nanny</option>
+            <option value="childminder">childminder</option>
+            <option value="day_care">day_care</option>
+            <option value="maternity_nurse">maternity_nurse</option>
+          </select>
 
-      <br />
-      <br />
+          <br />
+          <br />
 
-      <label>
-      Please enter your booking number:
-      </label>
-      <br />
-      <input
-      type="text"
-      name="bookingId"
-      value={this.state.value}
-      onChange={this.handleChange}
-      />
+          <label>
+          Please enter your booking number:
+          </label>
+          <br />
+          <input
+          type="text"
+          name="bookingId"
+          value={this.state.value}
+          onChange={this.handleChange}
+          />
 
-      <br />
-      <br />
+          <br />
+          <br />
 
-      <label>
-      Please select desired date for minder:
-      </label>
-      <br />
-      <input
-      type="text"
-      name="date"
-      value={this.state.value}
-      onChange={this.handleChange}
-      />
+          <label>
+          Please select desired date for minder:
+          </label>
+          <br />
+          <input
+          type="text"
+          name="date"
+          value={this.state.value}
+          onChange={this.handleChange}
+          />
 
-      <br />
-      <br />
+          <br />
+          <br />
 
-      <label>
-      Please select desired time for minder ********
-      </label>
-      <br />
-      <input
-      type="text"
-      name="time"
-      value={this.state.value}
-      onChange={this.handleChange}
-      />
+          <label>
+          Please select desired time for minder ********
+          </label>
+          <br />
+          <input
+          type="text"
+          name="time"
+          value={this.state.value}
+          onChange={this.handleChange}
+          />
 
-      <button
-      className = "submit"
-      target="_blank"
-      rel="noopener noreferrer"
-      onClick = {this.handleClick}
-      >
-      Submit
-      </button>
-      </form>
+          <button
+            className = "submit"
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick = {this.handleClick}
+            >
+            Submit
+          </button>
+        </form>
       </div>
 
     );
