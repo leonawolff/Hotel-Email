@@ -25,7 +25,13 @@ class App extends Component {
 
   async handleClick(e){
 
-    Form.sendEmail(this.state.bookingId, this.state.bookingInfo, this.state.date, this.state.time, this.state.category);
+    // console.log("ID " + this.state.bookingId);
+    // console.log("Info " + this.state.bookingInfo);
+    // console.log("date " + this.state.date);
+    // console.log("time " + this.state.time);
+    // console.log("category " + this.state.category);
+
+    Form.sendEmail(e, this.state.bookingId, this.state.bookingInfo, this.state.date, this.state.time, this.state.category);
 
   }
   async handleChange(event) {
@@ -86,7 +92,7 @@ class App extends Component {
     this.bookingInfo += `${this.state.pub_category}`;
     this.bookingInfo = this.state.filters.toString();
     this.bookingInfo = this.bookingInfo.replace(/,/g, '\n');
-    console.log("Booking Info: " + this.bookingInfo);
+    // console.log("Booking Info: " + this.bookingInfo);
     this.setState({
       bookingInfo: this.bookingInfo
     });

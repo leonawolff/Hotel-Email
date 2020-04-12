@@ -10,7 +10,8 @@ export default class extends React.Component {
   }
 
 
-  async sendEmail (bookingId, bookingInfo, date, time, category) {
+  sendEmail = (e, bookingId, bookingInfo, date, time, category) => {
+    e.preventDefault();
 
     console.log("ARRIVED AT SEND EMAIL")
 
