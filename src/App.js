@@ -5,7 +5,7 @@ import "./App.css";
 import "react-datepicker/dist/react-datepicker.css";
 import moment from 'moment';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import Form from './Form';
+import { env } from './config';
 
 class App extends Component {
   constructor() {
@@ -15,12 +15,13 @@ class App extends Component {
       startTime: new Date(),
       filters: [],
       pub_filters: "",
-      pub_category: "",
+      pub_category: "No category",
       bookingId: "",
       bookingInfo: ""
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleClick = this.handleClick.bind(this);
+    this.sendEmail = this.sendEmail.bind(this);
   }
 
   async handleClick(e){
@@ -31,9 +32,10 @@ class App extends Component {
     // console.log("time " + this.state.time);
     // console.log("category " + this.state.category);
 
-    Form.sendEmail(e, this.state.bookingId, this.state.bookingInfo, this.state.date, this.state.time, this.state.category);
+    this.sendEmail(e, this.state.bookingId, this.state.bookingInfo, this.state.date, this.state.time, this.state.category);
 
   }
+
   async handleChange(event) {
     const { name, value, type} = event.target;
     console.log(name);
@@ -97,6 +99,58 @@ class App extends Component {
       bookingInfo: this.bookingInfo
     });
     console.log("CATEGORY: " + this.state.pub_category);
+  }
+
+  sendEmail = (e, bookingId, bookingInfo, date, time, category) => {
+    e.preventDefault();
+    // require('dotenv').config();
+    console.log("ARRIVED AT SEND EMAIL")
+    //
+    // const db = require('db')
+    // db.connect({
+    // host: process.env.DB_HOST,
+    // username: process.env.DB_USER,
+    // password: process.env.DB_PASS
+    // })
+
+    // const {
+    //   REACT_APP_EMAILJS_RECEIVER: receiverEmail,
+    //   REACT_APP_EMAILJS_SENDER: senderEmail,
+    //   REACT_APP_EMAILJS_TEMPLATEID: templateId,
+    //   REACT_APP_EMAILJS_USERID: userId,
+    //   REACT_APP_SERVICE_ID: serviceId
+    // } = this.props.env;
+
+    var receiverEmail = "leona.wolff.ok@gmail.com";
+    var senderEmail = "oogobot@gmail.com";
+    var templateId = "oogo";
+    var userId = "user_ewFjCDg6at4eSHF2rAY0O";
+    var serviceId = "gmail";
+
+    let templateParams = {
+      from_name: senderEmail,
+      to_name: receiverEmail,
+      bookingId: bookingId,
+      time: time,
+      date: date,
+      category: category,
+      filters: bookingInfo
+    }
+
+    window.emailjs.sendForm(
+      serviceId,
+      templateId,
+      {
+        senderEmail,
+        receiverEmail,
+        templateParams
+      },
+      userId
+    )
+    .then(res => {
+      this.setState({ formEmailSent: true })
+    })
+    .catch(err => console.error('Failed to send feedback. Error: ', err))
   }
 
   render() {
@@ -284,5 +338,9 @@ class App extends Component {
     );
   }
 }
+
+App.propTypes = {
+env: PropTypes.object.isRequired
+};
 
 export default App;
