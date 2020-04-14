@@ -32,12 +32,14 @@ class App extends Component {
     console.log("this.state.bookingId " + this.state.bookingId);
     console.log("this.state.bookingInfo " + this.state.bookingInfo);
     console.log("this.state.date " + this.state.date);
-    console.log("this.state.time " + this.state.time);
+    console.log("this.state.startTime " + this.state.startTime);
+    console.log("this.state.endTime " + this.state.endTime);
     console.log("this.state.pub_category " + this.state.pub_category);
 
     console.log("END OF HANDLE CLICK");
 
-    this.sendEmail(e, this.state.bookingId, this.state.bookingInfo, this.state.date, this.state.time, this.state.pub_category);
+    this.sendEmail(e, this.state.bookingId, this.state.bookingInfo, this.state.date,
+      this.state.startTime, this.state.endTime, this.state.pub_category);
 
   }
 
@@ -66,25 +68,34 @@ class App extends Component {
         () => this.updateBookingInfo()
       );
     }
+    if (type === "date"){
+      this.setState(
+        {
+          date : event.target.value
+        }
+      );
+    }
+    if (type === "time"){
+      if (name === "startTime"){
+        this.setState(
+          {
+            startTime : event.target.value
+          }
+        );
+      }
+      if (name === "endTime"){
+        this.setState(
+          {
+            endTime : event.target.value
+          }
+        );
+      }
+    }
     if (type === "text") {
       if (name === "bookingId"){
         this.setState(
           {
             bookingId : event.target.value
-          }
-        );
-      }
-      if (name === "date"){
-        this.setState(
-          {
-            date : event.target.value
-          }
-        );
-      }
-      if (name === "time"){
-        this.setState(
-          {
-            time : event.target.value
           }
         );
       }
@@ -121,7 +132,8 @@ class App extends Component {
     var userId = process.env.REACT_APP_USER_ID;
     var serviceId = process.env.REACT_APP_SERVICE_ID;
     var bookingId = this.state.bookingId;
-    var time = this.state.time;
+    var startTime = this.state.startTime;
+    var endTime = this.state.endTime;
     var date = this.state.date;
     var category = this.state.pub_category.replace(/_/g, ' ');
     var filters = this.state.bookingInfo;
@@ -130,7 +142,8 @@ class App extends Component {
       from_name: senderEmail,
       to_name: receiverEmail,
       bookingId: bookingId,
-      time: time,
+      startTime: startTime,
+      endTime: endTime,
       date: date,
       category: category,
       filters: filters
@@ -296,7 +309,7 @@ class App extends Component {
           </label>
           <br />
           <input
-          type="text"
+          type="date"
           name="date"
           value={this.state.value}
           onChange={this.handleChange}
@@ -306,12 +319,26 @@ class App extends Component {
           <br />
 
           <label>
-          Please select desired time for minder ********
+          Please enter minder start time:
           </label>
           <br />
           <input
-          type="text"
-          name="time"
+          type="time"
+          name="startTime"
+          value={this.state.value}
+          onChange={this.handleChange}
+          />
+
+          <br />
+          <br />
+
+          <label>
+          Please enter minder end time:
+          </label>
+          <br />
+          <input
+          type="time"
+          name="endTime"
           value={this.state.value}
           onChange={this.handleChange}
           />
