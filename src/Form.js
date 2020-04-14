@@ -1,4 +1,4 @@
-import React from 'react';
+/*import React from 'react';
 import "./App.css";
 
 export default class extends React.Component {
@@ -11,12 +11,12 @@ export default class extends React.Component {
   }
 
 
-  sendEmail = (e, bookingId, bookingInfo, date, time, category) => {
-    e.preventDefault();
+  /*sendEmail = (e, bookingId, bookingInfo, date, time, category) => {
+    e.preventDefault();*/
 
-    console.log("ARRIVED AT SEND EMAIL")
+    //console.log("ARRIVED AT SEND EMAIL")
 
-    const {
+    /*const {
       REACT_APP_EMAILJS_RECEIVER: receiverEmail,
       REACT_APP_EMAILJS_SENDER: senderEmail,
       REACT_APP_EMAILJS_TEMPLATEID: templateId,
@@ -56,4 +56,4 @@ export default class extends React.Component {
 
   handleSubmit() {
   }
-}
+}*/
