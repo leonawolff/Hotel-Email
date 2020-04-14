@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import DatePicker from "react-datepicker";
 import PropTypes from 'prop-types';
+import emailjs from 'emailjs-com';
 import "./App.css";
 import "react-datepicker/dist/react-datepicker.css";
 import moment from 'moment';
@@ -101,31 +102,23 @@ class App extends Component {
     console.log("CATEGORY: " + this.state.pub_category);
   }
 
-  sendEmail = (e, bookingId, bookingInfo, date, time, category) => {
+  async sendEmail(e){
     e.preventDefault();
-    // require('dotenv').config();
-    console.log("ARRIVED AT SEND EMAIL")
-    //
-    // const db = require('db')
-    // db.connect({
-    // host: process.env.DB_HOST,
-    // username: process.env.DB_USER,
-    // password: process.env.DB_PASS
-    // })
+    console.log(process.env.REACT_APP_SERVICE_ID);
+    console.log(process.env.REACT_APP_TEMPLATE_ID);
+    console.log(process.env.REACT_APP_USER_ID);
+    console.log(process.env.REACT_APP_EMAILJS_RECEIVER);
 
-    // const {
-    //   REACT_APP_EMAILJS_RECEIVER: receiverEmail,
-    //   REACT_APP_EMAILJS_SENDER: senderEmail,
-    //   REACT_APP_EMAILJS_TEMPLATEID: templateId,
-    //   REACT_APP_EMAILJS_USERID: userId,
-    //   REACT_APP_SERVICE_ID: serviceId
-    // } = this.props.env;
-
-    var receiverEmail = "leona.wolff.ok@gmail.com";
-    var senderEmail = "oogobot@gmail.com";
-    var templateId = "oogo";
-    var userId = "user_ewFjCDg6at4eSHF2rAY0O";
-    var serviceId = "gmail";
+    var receiverEmail = process.env.REACT_APP_EMAILJS_RECEIVER;
+    var senderEmail = process.env.REACT_APP_EMAILJS_SENDER;
+    var templateId = process.env.REACT_APP_TEMPLATE_ID;
+    var userId = process.env.REACT_APP_USER_ID;
+    var serviceId = process.env.REACT_APP_SERVICE_ID;
+    var bookingId = this.state.bookingId;
+    var time = this.state.time;
+    var date = this.state.date;
+    var category = this.state.category;
+    var filters = this.state.bookingInfo;
 
     let templateParams = {
       from_name: senderEmail,
@@ -134,23 +127,16 @@ class App extends Component {
       time: time,
       date: date,
       category: category,
-      filters: bookingInfo
+      filters: filters
     }
 
-    window.emailjs.sendForm(
-      serviceId,
-      templateId,
-      {
-        senderEmail,
-        receiverEmail,
-        templateParams
-      },
-      userId
-    )
-    .then(res => {
-      this.setState({ formEmailSent: true })
-    })
-    .catch(err => console.error('Failed to send feedback. Error: ', err))
+    emailjs.send(process.env.REACT_APP_SERVICE_ID,process.env.REACT_APP_TEMPLATE_ID,templateParams,process.env.REACT_APP_USER_ID)
+    .then((result) => {
+      console.log(result.text);
+    }, (error) => {
+
+      console.log(error.text);
+    });
   }
 
   render() {
@@ -333,6 +319,14 @@ class App extends Component {
             Submit
           </button>
         </form>
+        <script type="text/javascript"
+        src="https://cdn.jsdelivr.net/npm/emailjs-com@2.4.1/dist/email.min.js">
+        </script>
+        <script type="text/javascript">
+        (function(){
+          emailjs.init(process.env.REACT_APP_USER_ID)
+        })();
+        </script>
       </div>
 
     );
