@@ -1,6 +1,5 @@
 import React, { Component } from "react";
-import PropTypes from 'prop-types';
-//import moment from 'moment'
+//import PropTypes from 'prop-types';
 import emailjs from 'emailjs-com';
 import "./App.css";
 
@@ -22,8 +21,6 @@ class App extends Component {
   }
 
   validate() {
-
-    console.log("ARRIVED AT VALIDATE")
     const errors = [];
 
     if (this.state.bookingId === undefined) {
@@ -38,75 +35,15 @@ class App extends Component {
     if (this.state.date === undefined) {
       errors.push("Date can't be empty");
     }
-    // if((this.state.date !== undefined)){
-    //
-    //   var tempDate = moment(this.state.date);
-    //   var validDate = moment.isValid(tempDate);
-    //
-    //   if(validDate){
-    //
-    //     var dateArray = this.state.date.split("-");
-    //     var inputDate = new Date(dateArray[0], (parseInt(dateArray[1])-1), dateArray[2]);
-    //     var today = new Date();
-    //     console.log("Booking date = " + inputDate);
-    //     console.log("Booking date unix = " + inputDate.getTime());
-    //     console.log("Current date unix = " + today.getTime());
-    //
-    //     // This needs to only be applied to a valid date.
-    //     if(this.state.bookingDate.getTime() < today.getTime()){
-    //       errors.push("Chosen date cannot be before today");
-    //
-    //     }
-    //     else{
-    //       errors.push("Invalid date");
-    //     }
-    //   }
-    //
-    // }
     return errors;
   }
 
-  // checkValidDate(date) {
-  //   var dateArray = this.state.date.split("-");
-  //
-  //   if(dateArray.length < 2){
-  //     return false;
-  //   }
-  //   if(dateArray[0] < 0){
-  //
-  //   }
-  //
-  // }
-
   async handleClick(e){
-
-    //    var errors = this.validate(this.state.bookingId, this.state.bookingDate, this.state.startTime, this.state.endTime);
-
-    console.log("HANDLE CLICK");
-
-    console.log("this.state.bookingId " + this.state.bookingId);
-    console.log("this.state.bookingInfo " + this.state.bookingInfo);
-    console.log("this.state.date " + this.state.date);
-    console.log("this.state.startTime " + this.state.startTime);
-    console.log("this.state.endTime " + this.state.endTime);
-    console.log("this.state.pub_category " + this.state.pub_category);
-
-    // var dateArray = this.state.date.split("-");
-    // var inputDate = new Date(dateArray[0], (parseInt(dateArray[1])-1), dateArray[2]);
-    // var today = new Date();
-    // console.log("Booking date = " + inputDate);
-    // console.log("Booking date unix = " + inputDate.getTime());
-    // console.log("Current date unix = " + today.getTime());
-
-    console.log("END OF HANDLE CLICK");
-
     this.sendEmail(e);
-
   }
 
   async handleChange(event) {
     const { name, value, type} = event.target;
-    console.log(name);
 
     if(this.validate().length === 0){
       this.state.valid = true;
@@ -122,59 +59,32 @@ class App extends Component {
         this.state.filters.push(value);
       }
 
-      this.setState(
-        {
-          pub_filters: this.state.filters.join(", ")
-        },
+      this.setState({pub_filters: this.state.filters.join(", ")},
         () => this.updateBookingInfo()
       );
     }
     if (type === "select-one") {
-      this.setState(
-        {
-          pub_category: event.target.value
-        },
+      this.setState({pub_category: event.target.value},
         () => this.updateBookingInfo()
       );
     }
     if (type === "date"){
-      this.setState(
-        {
-          date : event.target.value
-        }
-      );
+      this.setState({date : event.target.value});
     }
     if (type === "time"){
       if (name === "startTime"){
-        this.setState(
-          {
-            startTime : event.target.value
-          }
-        );
+        this.setState({startTime : event.target.value});
       }
       if (name === "endTime"){
-        this.setState(
-          {
-            endTime : event.target.value
-          }
-        );
+        this.setState({endTime : event.target.value});
       }
     }
     if (type === "text") {
       if (name === "bookingId"){
-        this.setState(
-          {
-            bookingId : event.target.value
-          }
-        );
+        this.setState({bookingId : event.target.value});
       }
-      console.log("Booking ID : " + this.state.bookingId);
-      console.log("Date : " + this.state.date);
-      console.log("Start time : " + this.state.startTime);
-      console.log("End time : " + this.state.endTime);
     };
   }
-
 
   updateBookingInfo() {
     if (this.state.pub_category.length !== 0)
@@ -182,49 +92,29 @@ class App extends Component {
     this.bookingInfo = this.state.filters.toString();
     this.bookingInfo = this.bookingInfo.replace(/,/g, '<br/>');
     this.bookingInfo = this.bookingInfo.replace(/_/g, ' ');
-    // console.log("Booking Info: " + this.bookingInfo);
     this.setState({
       bookingInfo: this.bookingInfo
     });
-    //    this.category = this.bookingInfo.replace(/_/g, ' ');
-    console.log("CATEGORY: " + this.state.pub_category.replace(/_/g, ' '));
   }
 
   async sendEmail(e){
     e.preventDefault();
-    console.log(process.env.REACT_APP_SERVICE_ID);
-    console.log(process.env.REACT_APP_TEMPLATE_ID);
-    console.log(process.env.REACT_APP_USER_ID);
-    console.log(process.env.REACT_APP_EMAILJS_RECEIVER);
-
-    var receiverEmail = process.env.REACT_APP_EMAILJS_RECEIVER;
-    var senderEmail = process.env.REACT_APP_EMAILJS_SENDER;
-    var templateId = process.env.REACT_APP_TEMPLATE_ID;
-    var userId = process.env.REACT_APP_USER_ID;
-    var serviceId = process.env.REACT_APP_SERVICE_ID;
-    var bookingId = this.state.bookingId;
-    var startTime = this.state.startTime;
-    var endTime = this.state.endTime;
-    var date = this.state.date;
-    var category = this.state.pub_category.replace(/_/g, ' ');
-    var filters = this.state.bookingInfo;
 
     let templateParams = {
-      from_name: senderEmail,
-      to_name: receiverEmail,
-      bookingId: bookingId,
-      startTime: startTime,
-      endTime: endTime,
-      date: date,
-      category: category,
-      filters: filters
+      from_name: process.env.REACT_APP_EMAILJS_SENDER,
+      to_name: process.env.REACT_APP_EMAILJS_RECEIVER,
+      bookingId: this.state.bookingId,
+      startTime: this.state.startTime,
+      endTime: this.state.endTime,
+      date: this.state.date,
+      category: this.state.pub_category.replace(/_/g, ' '),
+      filters: this.state.bookingInfo
     }
 
     emailjs.send(process.env.REACT_APP_SERVICE_ID,process.env.REACT_APP_TEMPLATE_ID,templateParams,process.env.REACT_APP_USER_ID)
     .then((result) => {
       console.log(result.text);
     }, (error) => {
-
       console.log(error.text);
     });
   }
@@ -233,7 +123,6 @@ class App extends Component {
     return (
       <div>
       <form>
-
       <h1>
       <img className = "logo"  alt = "logo" src={"logo192.png"}  width = "50" height = "50"/>
       <text className = "title">Book a Minder</text>
@@ -245,12 +134,11 @@ class App extends Component {
       <input
       type="checkbox"
       name="pub_filters"
-      value="new_borns"
+      value="newborns"
       onChange={this.handleChange}
       />{" "}
-      New borns
+      Newborns
       </label>
-
       <br />
       <label>
       <input
@@ -259,9 +147,8 @@ class App extends Component {
       value="non_smoker"
       onChange={this.handleChange}
       />{" "}
-      Non smoker
+      Non-smoker
       </label>
-
       <br />
       <label>
       <input
@@ -272,7 +159,6 @@ class App extends Component {
       />{" "}
       First aid
       </label>
-
       <br />
       <label>
       <input
@@ -283,7 +169,6 @@ class App extends Component {
       />{" "}
       Own Transport
       </label>
-
       <br />
       <label>
       <input
@@ -294,7 +179,6 @@ class App extends Component {
       />{" "}
       Qualifications
       </label>
-
       <br />
       <label>
       <input
@@ -305,7 +189,6 @@ class App extends Component {
       />{" "}
       Overnights
       </label>
-
       <br />
       <label>
       <input
@@ -316,7 +199,6 @@ class App extends Component {
       />{" "}
       Evenings
       </label>
-
       <br />
       <label>
       <input
@@ -327,7 +209,6 @@ class App extends Component {
       />{" "}
       Mornings
       </label>
-
       <br />
       <label>
       <input
@@ -338,7 +219,6 @@ class App extends Component {
       />{" "}
       All day
       </label>
-
       <br />
       <br />
       <label>Category: </label>
@@ -347,20 +227,17 @@ class App extends Component {
       value={this.state.pub_category}
       defaultValue={{ label: "Select Dept", value: 0 }}
       onChange={this.handleChange}
-      name="pub_category"
-      >
+      name="pub_category">
       <option value="">none</option>
       <option value="babysitter"> babysitter</option>
-      <option value="babysitter_overnight">babysitter_overnight</option>
+      <option value="overnight babysitter">overnight babysitter</option>
       <option value="nanny">nanny</option>
       <option value="childminder">childminder</option>
-      <option value="day_care">day_care</option>
-      <option value="maternity_nurse">maternity_nurse</option>
+      <option value="day care">day care</option>
+      <option value="maternity nurse">maternity nurse</option>
       </select>
-
       <br />
       <br />
-
       <label>
       Please enter your booking number:
       </label>
@@ -371,10 +248,8 @@ class App extends Component {
       value={this.state.value}
       onChange={this.handleChange}
       />
-
       <br />
       <br />
-
       <label>
       Please select desired date for minder:
       </label>
@@ -385,10 +260,8 @@ class App extends Component {
       value={this.state.value}
       onChange={this.handleChange}
       />
-
       <br />
       <br />
-
       <label>
       Please enter minder start time:
       </label>
@@ -399,10 +272,8 @@ class App extends Component {
       value={this.state.value}
       onChange={this.handleChange}
       />
-
       <br />
       <br />
-
       <label>
       Please enter minder end time:
       </label>
@@ -413,7 +284,6 @@ class App extends Component {
       value={this.state.value}
       onChange={this.handleChange}
       />
-
       <button
       disabled={!(this.state.valid)}
       title="Login"
@@ -434,13 +304,8 @@ class App extends Component {
       })();
       </script>
       </div>
-
     );
   }
 }
-
-App.propTypes = {
-  env: PropTypes.object.isRequired
-};
 
 export default App;
