@@ -27,13 +27,17 @@ class App extends Component {
 
   async handleClick(e){
 
-    // console.log("ID " + this.state.bookingId);
-    // console.log("Info " + this.state.bookingInfo);
-    // console.log("date " + this.state.date);
-    // console.log("time " + this.state.time);
-    // console.log("category " + this.state.category);
+    console.log("HANDLE CLICK");
 
-    this.sendEmail(e, this.state.bookingId, this.state.bookingInfo, this.state.date, this.state.time, this.state.category);
+    console.log("this.state.bookingId " + this.state.bookingId);
+    console.log("this.state.bookingInfo " + this.state.bookingInfo);
+    console.log("this.state.date " + this.state.date);
+    console.log("this.state.time " + this.state.time);
+    console.log("this.state.pub_category " + this.state.pub_category);
+
+    console.log("END OF HANDLE CLICK");
+
+    this.sendEmail(e, this.state.bookingId, this.state.bookingInfo, this.state.date, this.state.time, this.state.pub_category);
 
   }
 
@@ -94,12 +98,14 @@ class App extends Component {
     if (this.state.pub_category.length !== 0)
     this.bookingInfo += `${this.state.pub_category}`;
     this.bookingInfo = this.state.filters.toString();
-    this.bookingInfo = this.bookingInfo.replace(/,/g, '\n');
+    this.bookingInfo = this.bookingInfo.replace(/,/g, '<br/>');
+    this.bookingInfo = this.bookingInfo.replace(/_/g, ' ');
     // console.log("Booking Info: " + this.bookingInfo);
     this.setState({
       bookingInfo: this.bookingInfo
     });
-    console.log("CATEGORY: " + this.state.pub_category);
+//    this.category = this.bookingInfo.replace(/_/g, ' ');
+    console.log("CATEGORY: " + this.state.pub_category.replace(/_/g, ' '));
   }
 
   async sendEmail(e){
@@ -117,7 +123,7 @@ class App extends Component {
     var bookingId = this.state.bookingId;
     var time = this.state.time;
     var date = this.state.date;
-    var category = this.state.category;
+    var category = this.state.pub_category.replace(/_/g, ' ');
     var filters = this.state.bookingInfo;
 
     let templateParams = {
